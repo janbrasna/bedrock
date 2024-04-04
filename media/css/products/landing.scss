@@ -9,6 +9,12 @@ $image-path: '/media/protocol/img';
 @import '~@mozilla-protocol/core/protocol/css/components/logos/logo-product-firefox';
 @import '~@mozilla-protocol/core/protocol/css/includes/lib';
 
+// downgrade to 2col on smaller screens
+@media (min-width: $screen-md) and (max-width: $screen-lg) {
+    .mzp-l-columns.mzp-t-columns-three {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 // https://github.com/mozilla/protocol/issues/893
 .mzp-c-button svg {

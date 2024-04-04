@@ -12,14 +12,11 @@ pocket-add-dont-see-the-pocket = Don’t see the { -brand-name-pocket } button?
 
 pocket-add-view-from-any = View from Any Device
 pocket-add-different-devices = Different devices displaying { -brand-name-pocket } articles
+
 # this is a title for a list of different app stores where you can download pocket
 pocket-add-get-pocket-for = Get { -brand-name-pocket } for:
-
 pocket-add-apple-app-store = { -brand-name-apple-app-store }
-pocket-add-mac-app-store = { -brand-name-mac-short } app store
 pocket-add-google-play-store = { -brand-name-google-play } store
-pocket-add-amazon-app-store = { -brand-name-amazon } app store
-pocket-add-windows = { -brand-name-windows }
 pocket-add-kobo-e-reader = { -brand-name-kobo } e-reader
 pocket-add-windows-mobile = { -brand-name-windows-mobile }
 pocket-add-blackberry = { -brand-name-blackberry }

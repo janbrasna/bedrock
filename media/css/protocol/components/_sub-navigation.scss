@@ -13,22 +13,12 @@
         inset 0 10px 3px -10px rgba(29, 17, 51, 0.12);
 
     .mzp-l-content {
-        max-width: none;
-        padding: $spacing-md 0;
+        padding-top: 0;
+        padding-bottom: $spacing-md;
     }
 
     .c-sub-navigation-content {
-        max-width: $content-max;
-        margin: 0 auto;
-        padding: 0 $spacing-lg;
-        
-        @media #{$mq-md} {
-            padding: 0 $layout-lg;
-        }
-
-        @media #{$mq-lg} {
-            padding: 0 $layout-xl;
-        }
+        padding-top: $spacing-md;
     }
 
     .c-sub-navigation-icon {

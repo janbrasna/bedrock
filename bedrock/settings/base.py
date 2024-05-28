@@ -468,6 +468,7 @@ SUPPORTED_NONLOCALES = [
     "keymaster",  # in mozorg urls
     "microsummaries",  # in mozorg urls
     "xbl",  # in mozorg urls
+    "projects",  # in mozorg urls
     "revision.txt",  # from root_files
     "locales",  # in mozorg urls
 ]

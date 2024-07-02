@@ -113,6 +113,7 @@ module.exports = {
                 target: process.env.WP_PROXY_URL || 'http://0.0.0.0:8080'
             }
         ],
+        allowedHosts: 'all',
         watchFiles: ['media/**/*.js', 'media/**/*.scss', 'bedrock/**/*.html'],
         client: {
             logging: 'error',

@@ -23,12 +23,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - LABEL: "General CDN Tests"
-            SHARD_LABEL: "general-cdn-tests"
-            MARK_EXPRESSION: "cdn and not cdnprod"
-          - LABEL: "Prod-only CDN Tests"
-            SHARD_LABEL: "prod-only-cdn-tests"
-            MARK_EXPRESSION: cdnprod
+         # - LABEL: "General CDN Tests"
+         #   SHARD_LABEL: "general-cdn-tests"
+         #   MARK_EXPRESSION: "cdn and not cdnprod"
+         # - LABEL: "Prod-only CDN Tests"
+         #   SHARD_LABEL: "prod-only-cdn-tests"
+         #   MARK_EXPRESSION: cdnprod
+          - LABEL: "All CDN Tests"
+            SHARD_LABEL: "all-cdn-tests"
+            MARK_EXPRESSION: "cdn or cdnprod"
     env:
       BASE_URL: ${{ github.event.inputs.mozorg_service_hostname || 'https://www.mozilla.org' }} # Mozorg base URL
       BROWSER_NAME: firefox

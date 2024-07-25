@@ -53,7 +53,7 @@ jobs:
       - name: Run CDN tests
         run: ./bin/integration_tests/functional_tests.sh
         env:
-          TEST_IMAGE: mozmeao/bedrock_test:${{ github.sha }}
+          TEST_IMAGE: mozmeao/bedrock_test:latest # not this fork's own :${{ github.sha }}
 
       - name: Cleanup CDN tests
         run: ./bin/integration_tests/cleanup_after_functional_tests.sh

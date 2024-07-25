@@ -9,7 +9,7 @@ on:
     inputs:
       mozorg_service_hostname:
         description: The root URL of the Mozorg service to run tests against. eg 'https://www.mozilla.org'
-        required: true
+        required: false # true   #  == empty is enough to run the default <3
 
 concurrency:
   group: cdn-tests

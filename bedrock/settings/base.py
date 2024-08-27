@@ -471,19 +471,14 @@ DEV_GEO_COUNTRY_CODE = config("DEV_GEO_COUNTRY_CODE", default="US")
 # Paths that don't require a locale code in the URL.
 # matches the first url component (e.g. mozilla.org/credits)
 SUPPORTED_NONLOCALES = [
-    # from redirects.urls
     "media",
     "static",
-    "certs",
-    "images",  # root_files
-    "credits",  # in mozorg urls
+    "credits",  # mozorg.credits
     "robots.txt",  # in mozorg urls
     ".well-known",  # in mozorg urls
-    "telemetry",  # redirect only
-    "webmaker",  # redirect only
-    "healthz",  # Needed for k8s
-    "readiness",  # Needed for k8s
-    "healthz-cron",  # status dash, in urls/mozorg_mode.py
+    "healthz",  # watchman.ping for k8s
+    "readiness",  # watchman.status for k8s
+    "healthz-cron",  # cron_health_check in urls/mozorg_mode.py
     "2004",  # in mozorg urls
     "2005",  # in mozorg urls
     "2006",  # in mozorg urls
@@ -506,22 +501,15 @@ SUPPORTED_LOCALE_IGNORE = [
 # specific URLs, add them to mozorg/templates/mozorg/robots.txt.
 NOINDEX_URLS = [
     r"^(404|500)/",
-    r"^firefox/welcome/",
-    r"^contribute/(embed|event)/",
     r"^cms-admin/",
     r"^django-admin/",
-    r"^firefox/set-as-default/thanks/",
+    r"^firefox/welcome/",
     r"^firefox/unsupported/",
-    r"^firefox/(sms-)?send-to-device-post",
-    r"^firefox/feedback",
     r"^firefox/stub_attribution_code/",
-    r"^firefox/dedicated-profiles/",
     r"^firefox/installer-help/",
-    r"^firefox/this-browser-comes-highly-recommended/",
     r"^firefox/nightly/notes/feed/$",
     r"^firefox.*/all/$",
     r"^.+/(firstrun|whatsnew)/$",
-    r"^m/",
     r"^newsletter/(confirm|existing|hacks\.mozilla\.org|recovery|updated|fxa-error)/",
     r"^newsletter/opt-out-confirmation/",
     r"^newsletter/country/success/",
@@ -530,14 +518,18 @@ NOINDEX_URLS = [
     r"^products/monitor/waitlist-plus/",
     r"^products/monitor/waitlist-scan/",
     r"/system-requirements/$",
-    r".*/(firstrun|thanks)/$",
+    r"/thanks/$",
     r"^readiness/$",
     r"^healthz(-cron)?/$",
     r"^country-code\.json$",
     r"^firefox/browsers/mobile/get-ios/",
     # exclude redirects
-    r"^foundation/annualreport/$",
+    r"^m/",
+    r"^firefox/dedicated-profiles/",
+    r"^firefox/feedback",
+    r"^firefox/this-browser-comes-highly-recommended/",
     r"^firefox/notes/$",
+    r"^foundation/annualreport/$",
     r"^teach/$",
     r"^about/legal/impressum/$",
     r"^security/announce/",

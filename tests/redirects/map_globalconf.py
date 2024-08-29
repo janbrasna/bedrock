@@ -13,18 +13,18 @@ URLS = flatten(
     (
         # bug 832348 **/index.html -> **/
         url_test("/any/random/url/with/index.html", "/any/random/url/with/"),
-        # bug 774675 + also see Issue 13211 for why /en/ isn't included here any more
+        # bug 774675, issue 13211
+        url_test("/en/", "/en-US/"),
         url_test("/es/", "/es-ES/", status_code=requests.codes.found),
         url_test("/pt/", "/pt-BR/", status_code=requests.codes.found),
         # bug 795970 - lowercase to uppercase, e.g. en-us to en-US
         url_test("/en-us/firefox/", "/en-US/firefox/", status_code=requests.codes.found),
         url_test("/es-es/firefox/", "/es-ES/firefox/", status_code=requests.codes.found),
         url_test("/pt-br/firefox/", "/pt-BR/firefox/", status_code=requests.codes.found),
-        # bug 880182
-        url_test("/ja-JP-mac/", "/ja/", status_code=requests.codes.found),
-        # bug 795970 - lowercase to uppercase, e.g. en-us to en-US
         url_test("/en-us/", "/en-US/", status_code=requests.codes.found),
         url_test("/pt-br/", "/pt-BR/", status_code=requests.codes.found),
+        # bug 880182
+        url_test("/ja-JP-mac/", "/ja/", status_code=requests.codes.found),
         # bug 845988 - remove double slashes in URLs
         url_test("/en-US/firefox//all/", "/en-US/firefox/all/"),
         url_test("/pt-BR/////thunderbird/", "/pt-BR/thunderbird/"),

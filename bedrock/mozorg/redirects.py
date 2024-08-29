@@ -527,8 +527,7 @@ redirectpatterns = (
     # Issue 12563
     redirect(r"^/exp/firefox/?$", "firefox"),
     redirect(r"^/exp/firefox/new/?$", "firefox.new"),
-    redirect(r"^accounts/?$", "mozorg.account"),
-    # redirect(r"^/exp/firefox/accounts/?$", "mozorg.account"),
+    # Issue 14039
     redirect(r"^/exp/opt-out/?$", "https://www.convert.com/opt-out/"),
     # Issue 13211
     redirect(r"^/en/$", "/en-US/", permanent=True),
@@ -540,7 +539,7 @@ redirectpatterns = (
     # Issue 13672
     redirect(r"/VendorDPA/?$", "https://assets.mozilla.net/pdf/VendorDPA.pdf", re_flags="i"),
     # Issue 14221
-    redirect(r"^firefox/products/?$", "/products/"),
+    redirect(r"^firefox/products/?$", "products.landing"),
     # Issue 14252
     redirect(r"^stories/?$", "https://blog.mozilla.org/category/products/firefox/"),
     # Issue 14245

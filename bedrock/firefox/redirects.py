@@ -525,8 +525,6 @@ redirectpatterns = (
     redirect(r"^vote/?", "/firefox/election/"),
     # issue 9391
     redirect(r"^/firefox/election/?$", "firefox"),
-    # fxa
-    redirect(r"^firefox/accounts/features/?", "mozorg.account"),
     # bug 1577449
     redirect(r"^firefox/features/send-tabs/?", "https://support.mozilla.org/kb/send-tab-firefox-desktop-other-devices"),
     # issue 6512
@@ -536,8 +534,9 @@ redirectpatterns = (
     # issue 14240
     redirect(r"^/exp/firefox/accounts/?$", "mozorg.account"),
     redirect(r"^firefox/accounts/?$", "mozorg.account"),
-    # issue 7210
+    redirect(r"^firefox/accounts/features/?", "mozorg.account"),
     redirect(r"^firefox/account/?$", "mozorg.account"),
+    redirect(r"^accounts/?$", "mozorg.account"),
     # issue 7436
     redirect(r"^firefox/feedback/?$", "https://support.mozilla.org/questions/new/desktop"),
     # issue 7491

@@ -43,10 +43,7 @@ _csp_script_src = [
     "s.ytimg.com",
     "js.stripe.com",
 ]
-_csp_style_src = [
-    # TODO fix things so that we don't need this
-    csp.constants.UNSAFE_INLINE,
-]
+_csp_style_src = []
 _csp_child_src = [
     "www.googletagmanager.com",
     "www.google-analytics.com",
@@ -106,10 +103,10 @@ CONTENT_SECURITY_POLICY = {
         "script-src": list(set(_csp_default_src + _csp_script_src)),
         "style-src": list(set(_csp_default_src + _csp_style_src)),
         "font-src": list(set(_csp_default_src + _csp_font_src)),
-        "child-src": _csp_child_src,
         "connect-src": list(set(_csp_default_src + _csp_connect_src)),
-        # support older browsers (mainly Safari)
-        "frame-src": _csp_child_src,
+        "child-src": _csp_child_src,
+        "frame-src": _csp_child_src,  # support older browsers (mainly Safari)
+        "frame-ancestors": [csp.constants.NONE],
         "report-uri": csp_report_uri,
     },
 }
@@ -124,8 +121,13 @@ if csp_ro_report_uri:
     # CSP directive updates we're testing that we hope to move to the enforced policy.
     CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["default-src"] = [csp.constants.SELF]
     CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["object-src"] = [csp.constants.NONE]
-    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["frame-ancestors"] = [csp.constants.NONE]
-    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["style-src"].remove(csp.constants.UNSAFE_INLINE)
+    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["connect-src"].remove("sentry.prod.mozaws.net")
+    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["connect-src"].remove("stage.cjms.nonprod.cloudops.mozgcp.net")
+    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["connect-src"].remove("cjms.services.mozilla.com")
+    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["connect-src"].append(CJMS_AFFILIATE_ENDPOINT)
+    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["child-src"].remove("accounts.firefox.com")
+    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["child-src"].append(FXA_ENDPOINT)
+    CONTENT_SECURITY_POLICY_REPORT_ONLY["DIRECTIVES"]["img-src"].remove("images.ctfassets.net")
 
 
 # `CSP_PATH_OVERRIDES` and `CSP_PATH_OVERRIDES_REPORT_ONLY` are mainly for overriding CSP settings

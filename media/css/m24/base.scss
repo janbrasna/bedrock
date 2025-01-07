@@ -26,17 +26,14 @@ body {
     background-color: $m24-color-white;
     color: $m24-color-black;
     font-family: var(--body-font-family);
-    font-variant-ligatures: none;
-    line-height: 1.2;
+    font-variant-ligatures: none;  //TODO: why?
 }
 
 h1, h2, h3, h4, h5 {
     color: $m24-color-black;
     font-family: var(--title-font-family);
-    font-variant-ligatures: none;
+    font-variant-ligatures: none;  //TODO: why?
     font-weight: 600;
-    letter-spacing: -0.01em;
-    line-height: 1.1;
 }
 
 strong {
@@ -62,6 +59,15 @@ a:link {
 *:focus,
 *:focus-visible {
     outline-offset: 6px;
+}
+
+main {
+    line-height: 1.2;
+
+    h1, h2, h3, h4, h5 {
+        letter-spacing: -0.01em;
+        line-height: 1.1;
+    }
 }
 
 /* ------------------------------------------------------------------------------- */

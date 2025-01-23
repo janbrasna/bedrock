@@ -83,7 +83,7 @@ import MzpModal from '@mozilla-protocol/core/protocol/js/modal';
             }
         }
 
-        // A fetch helper since we use this in both the on click and popstate.
+        // A fetch helper since we use this in both the onclick and popstate.
         // pushState is a boolean so we avoid pushing state if triggered from popstate.
         function fetchContent(url, pushState = false) {
             fetch(url, {
@@ -100,7 +100,7 @@ import MzpModal from '@mozilla-protocol/core/protocol/js/modal';
                     return response.text();
                 })
                 .then((html) => {
-                    partialTarget.innerHTML = html;
+                    partialTarget.outerHTML = html;
                     if (pushState) {
                         history.pushState({ path: url }, '', url);
                     }

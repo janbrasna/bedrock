@@ -3,8 +3,10 @@
  License, v. 2.0. If a copy of the MPL was not distributed with this
  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 #}
+
 {% extends "firefox/base/base-protocol.html" %}
 
+{# FIXME! show step name in title, e.g. current_step? #}
 {%- block page_title -%}
   {{ ftl('firefox-all-download-the-firefox-v2') }}
 {%- endblock -%}

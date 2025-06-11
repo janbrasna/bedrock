@@ -30,6 +30,7 @@ ciphers = (
 def write_ssl_results(base_url, tmp_filename):
     print("get results")
     data = subprocess.check_output(["ssllabs-scan", "--quiet", base_url])
+    print(data.decode())
     with open(tmp_filename, "w") as file:
         file.write(data.decode())
 

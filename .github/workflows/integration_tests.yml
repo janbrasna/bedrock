@@ -21,19 +21,19 @@ jobs:
     strategy:
       matrix:
         include:
+          - LABEL: fake-saucelabs
+            MARK_EXPRESSION: smoke
           - LABEL: test-headless
-            DRIVER: ""
             MARK_EXPRESSION: headless
-
     env:
+      DRIVER: ""
       BROWSER_NAME: ""
       PLATFORM: ""
-      PYTEST_PROCESSES: ""
+      PYTEST_PROCESSES: 8
       SAUCELABS_API_KEY: " "
       SAUCELABS_USERNAME: " "
       BASE_URL: ${{ github.event.inputs.mozorg_service_hostname || 'https://test.bedrock.nonprod.webservices.mozgcp.net' }}
       CI_JOB_ID: ${{ github.run_id }}
-      DRIVER: ""
       LABEL: ${{ matrix.LABEL }}
       MARK_EXPRESSION: ${{ matrix.MARK_EXPRESSION }}
 
@@ -61,7 +61,7 @@ jobs:
         with:
           name: test-results
           path: results-${{github.run_id}}-${{matrix.label}}
-          if-no-files-found: ignore  # this avoids a false "Warning" if there were no issues
+          if-no-files-found: ignore  # this avoids a false "Warning" if there were no issues
 
   playwright-tests:
     if: always()
@@ -81,5 +81,3 @@ jobs:
       run: cd tests/playwright && npm ci && npm run install-deps
     - name: Run Playwright tests
       run: cd tests/playwright && npm run integration-tests
-
-

@@ -24,16 +24,19 @@ jobs:
         include:
           - LABEL: fake-saucelabs
             MARK_EXPRESSION: smoke
+            BROWSER_NAME: chrome
+            DRIVER: Remote
           - LABEL: test-headless
             MARK_EXPRESSION: headless
+            DRIVER: ""
     env:
       BASE_URL: ${{ github.event.inputs.mozorg_service_hostname || 'https://dev.bedrock.nonprod.webservices.mozgcp.net' }}
       LABEL: ${{ matrix.LABEL }}
       MARK_EXPRESSION: ${{ matrix.MARK_EXPRESSION }}
-      DRIVER: ""
-      BROWSER_NAME: ""
+      DRIVER: ${{ matrix.DRIVER }}
+      BROWSER_NAME: ${{ matrix.BROWSER_NAME }}
       PLATFORM: ""
-      PYTEST_PROCESSES: 8
+      PYTEST_PROCESSES: auto
       SAUCELABS_API_KEY: " "
       SAUCELABS_USERNAME: " "
       CI_JOB_ID: ${{ github.run_id }}

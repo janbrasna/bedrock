@@ -26,6 +26,11 @@ jobs:
             MARK_EXPRESSION: headless
 
     env:
+      BROWSER_NAME: ""
+      PLATFORM: ""
+      PYTEST_PROCESSES: ""
+      SAUCELABS_API_KEY: " "
+      SAUCELABS_USERNAME: " "
       BASE_URL: ${{ github.event.inputs.mozorg_service_hostname || 'https://test.bedrock.nonprod.webservices.mozgcp.net' }}
       CI_JOB_ID: ${{ github.run_id }}
       DRIVER: ""

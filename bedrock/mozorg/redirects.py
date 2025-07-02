@@ -76,7 +76,7 @@ redirectpatterns = (
     redirect(r"^b2g", "https://support.mozilla.org/products/firefox-os"),
     # Bug 781914
     redirect(r"^contribute/areas\.html$", "mozorg.contribute"),
-    redirect(r"^contribute/universityambassadors", "https://campus.mozilla.community/"),
+    redirect(r"^contribute/universityambassadors", "LINKROT"),
     # Bug 1144949
     redirect(r"^contribute/page/?$", "https://wiki.mozilla.org/Webdev/GetInvolved/mozilla.org"),
     # Bug 763665, 1148127
@@ -87,10 +87,10 @@ redirectpatterns = (
     redirect(r"^foundation/identity-guidelines(/.*)?", "https://mozilla.design/mozilla/"),
     # Bug 945474 - delete Marketplace marketing product page
     # and redirect
-    redirect(r"^apps/?$", "https://marketplace.firefox.com/"),
+    redirect(r"^apps/?$", "LINKROT"),
     # Bug 800467 /apps/partners ->
     # marketplace.firefox.com/developers
-    redirect(r"apps/partners/?$", "https://marketplace.firefox.com/developers/"),
+    redirect(r"apps/partners/?$", "LINKROT"),
     # Bug 815527 /m/privacy.html -> /privacy/firefox/
     redirect(r"^m/privacy\.html$", "privacy.notices.firefox"),
     # Bug 1109318 /privacy/you -> privacy/tips/
@@ -105,8 +105,8 @@ redirectpatterns = (
     redirect(r"^about/mission/?$", "/mission/"),
     # Bug 800298 /webmaker/ -> wm.o and /webmaker/videos/ ->
     # wm.o/videos/
-    redirect(r"webmaker/?$", "https://webmaker.org"),
-    redirect(r"webmaker/videos/?$", "https://webmaker.org/videos/"),
+    redirect(r"webmaker/?$", "LINKROT"),
+    redirect(r"webmaker/videos/?$", "LINKROT"),
     # Bug 822817 /telemetry/ ->
     # https://wiki.mozilla.org/Telemetry/FAQ
     redirect(r"telemetry/?$", "https://wiki.mozilla.org/Telemetry/FAQ"),
@@ -121,7 +121,7 @@ redirectpatterns = (
     # Bug 981176 - For now we'll hard-code a redirect to 1.3
     # In the future this should automatically go to the
     # latest version's notes
-    redirect(r"^firefox/os/notes/?$", "/firefox/os/notes/1.3/"),
+    redirect(r"^firefox/os/notes/?$", "LINKROT"),
     # Bug 997577 - /legal/ -> /about/legal/
     redirect(r"^legal/fraud-report/?$", "/about/legal/fraud-report/"),
     redirect(r"^legal/eula/?$", "/about/legal/eula/"),
@@ -173,7 +173,7 @@ redirectpatterns = (
     # Bug 1040970
     redirect(
         r"^mozillacareers$",
-        "https://wiki.mozilla.org/People/mozillacareers",
+        "LINKROT",
         query={
             "utm_medium": "redirect",
             "utm_source": "mozillacareers-vanity",
@@ -201,7 +201,7 @@ redirectpatterns = (
     redirect(r"^about/governance/policies/security-group/certs/included(?:/(?:index\.html)?)?$", "https://wiki.mozilla.org/CA:IncludedCAs"),
     redirect(r"^about/governance/policies/security-group/certs/pending(?:/(?:index\.html)?)?$", "https://wiki.mozilla.org/CA:PendingCAs"),
     # bug 1068931
-    redirect(r"^advocacy/?$", "https://advocacy.mozilla.org/"),
+    redirect(r"^advocacy/?$", "LINKROT"),
     # bug 887426
     redirect(r"^about/policies/?$", "/about/governance/policies/"),
     redirect(r"^about/policies/participation\.html$", "/about/governance/policies/participation/"),
@@ -278,18 +278,18 @@ redirectpatterns = (
     redirect(r"^about/contact.*$", "/contact/spaces/"),
     redirect(r"^contribute/local/?$", "/contact/communities/"),
     redirect(r"^contribute/local/northamerica\.html$", "/contact/communities/north-america/"),
-    redirect(r"^contribute/local/europe\.html$", "/contact/communities/europe/"),
+    redirect(r"^contribute/local/europe\.html$", "SIMPLIFY^v"),
     redirect(r"^contribute/local/latinamerica\.html$", "/contact/communities/latin-america/"),
     redirect(r"^contribute/local/africamideast\.html$", "/contact/communities/africa-middle-east/"),
     redirect(r"^contribute/local/asia\.html$", "/contact/communities/asia-south-pacific/"),
     redirect(r"^contribute/local/southpole\.html$", "/contact/communities/antarctica/"),
     # bug 1393622
     redirect(r"contact/spaces/(?:auckland|tokyo|taipei|london|mountain-view|vancouver|portland)/?$", "/contact/spaces/"),
-    redirect("^contribute/buttons/", "https://affiliates.mozilla.org/"),
+    redirect("^contribute/buttons/", "LINKROT"),
     # bug 875052
     redirect(r"^about/get-involved", "mozorg.contribute"),
     # bug 878926
-    redirect(r"^firefoxflicks/?(?P<p>.*)$", "https://firefoxflicks.mozilla.org/{locale}{p}"),
+    redirect(r"^firefoxflicks/?(?P<p>.*)$", "LINKROT"),
     # bug 849426
     redirect(r"^about/history(\.html)?$", "/about/history/"),
     redirect(r"^about/bookmarks\.html$", "https://wiki.mozilla.org/Historical_Documents"),
@@ -430,7 +430,7 @@ redirectpatterns = (
     # Bug 1361194, Issue 8375
     redirect(r"^internethealth/?$", "https://foundation.mozilla.org/internet-health/"),
     # Bug 1384370, Issue 7840
-    redirect(r"^developers/?$", "https://developer.mozilla.com/"),
+    redirect(r"^developers/?$", "https://developer.mozilla.com/"), # UPDATE
     # Bug 1438464
     redirect(r"^collusion/?$", "https://github.com/mozilla/lightbeam-we"),
     redirect(r"^lightbeam(/.*)?", "https://github.com/mozilla/lightbeam-we"),
@@ -470,7 +470,7 @@ redirectpatterns = (
     # Issue 7970
     redirect(r"^moss/mission-partners-india/?$", "mozorg.moss.mission-partners"),
     # Issue 7840
-    redirect(r"^developer/?$", "https://developer.mozilla.com/"),
+    redirect(r"^developer/?$", "https://developer.mozilla.com/"), # UPDATE
     redirect(r"^developer/browsertest/?$", "https://developer.mozilla.org/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing"),
     redirect(r"^developer/css-grid/?$", "https://developer.mozilla.org/docs/Learn/CSS/CSS_layout/Grids"),
     # Issue 8418
@@ -544,7 +544,7 @@ redirectpatterns = (
     redirect(r"^stories/?$", "https://blog.mozilla.org/category/products/firefox/"),
     # Issue 14245
     redirect(r"^contact/spaces/berlin/?$", "/contact/spaces/"),
-    redirect(r"^contact/spaces/beijing/?$", "/contact/spaces/"),
+    redirect(r"^contact/spaces/beijing/?$", "/contact/spaces/"),  # SIMPLIFY ^v to bug 1393622
     redirect(r"^contact/spaces/san-francisco/?$", "/contact/spaces/"),
     redirect(r"^contact/spaces/toronto/?$", "/contact/spaces/"),
     redirect(r"^contact/spaces/paris/?$", "/contact/spaces/"),

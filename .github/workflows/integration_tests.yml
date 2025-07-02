@@ -6,9 +6,9 @@ on:
   push:
   workflow_dispatch:
     inputs:
-      #branch:
-      #  description: The branch of mozilla/bedrock we're testing against - main|stage|prod|run-integration-tests
-      #  required: true
+      branch:
+        description: The branch of mozilla/bedrock we're testing against - main|stage|prod|run-integration-tests
+        required: false #true
       git_sha:
         description: The git SHA just deployed to the service we want to test
         required: false #true
@@ -23,19 +23,22 @@ jobs:
         include:
           - LABEL: fake-saucelabs
             MARK_EXPRESSION: smoke
+            BROWSER_NAME: chrome
+            DRIVER: Remote
           - LABEL: test-headless
             MARK_EXPRESSION: headless
+            DRIVER: ""
     env:
-      DRIVER: ""
-      BROWSER_NAME: ""
-      PLATFORM: ""
-      PYTEST_PROCESSES: 8
-      SAUCELABS_API_KEY: " "
-      SAUCELABS_USERNAME: " "
       BASE_URL: ${{ github.event.inputs.mozorg_service_hostname || 'https://test.bedrock.nonprod.webservices.mozgcp.net' }}
-      CI_JOB_ID: ${{ github.run_id }}
       LABEL: ${{ matrix.LABEL }}
       MARK_EXPRESSION: ${{ matrix.MARK_EXPRESSION }}
+      DRIVER: ${{ matrix.DRIVER }}
+      BROWSER_NAME: ${{ matrix.BROWSER_NAME }}
+      PLATFORM: ""
+      PYTEST_PROCESSES: auto
+      SAUCELABS_API_KEY: " "
+      SAUCELABS_USERNAME: " "
+      CI_JOB_ID: ${{ github.run_id }}
 
     steps:
       - name: Fetch codebase
@@ -49,7 +52,7 @@ jobs:
         if: always()
         run: ./bin/integration_tests/functional_tests.sh
         env:
-          TEST_IMAGE: mozmeao/bedrock_test:dd3e3884f52dd9b0d92c46336bd79b570dc7b7a2 # ${{ github.event.inputs.git_sha }}
+          TEST_IMAGE: mozmeao/bedrock_test:${{ inputs.git_sha || 'latest' }}  # ${{ github.event.inputs.git_sha }}
 
       - name: Cleanup after functional integration tests
         if: always()

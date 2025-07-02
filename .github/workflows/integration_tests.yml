@@ -17,7 +17,6 @@ on:
         required: false #true
 jobs:
   integration-tests:
-    if: always()
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,7 +42,6 @@ jobs:
 
     steps:
       - name: Fetch codebase
-        if: always()
         uses: actions/checkout@v4
       - name: Sets specific env vars IF we're on testing against dev/main only
         if: ${{ github.event.inputs.branch == 'main'}}
@@ -54,7 +52,7 @@ jobs:
         if: always()
         run: ./bin/integration_tests/functional_tests.sh
         env:
-          TEST_IMAGE: mozmeao/bedrock_test:latest # ${{ github.event.inputs.git_sha }}
+          TEST_IMAGE: mozmeao/bedrock_test:${{ inputs.git_sha || 'latest' }}  # ${{ github.event.inputs.git_sha }}
 
       - name: Cleanup after functional integration tests
         if: always()

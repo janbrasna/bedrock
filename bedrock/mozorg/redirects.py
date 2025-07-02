@@ -14,6 +14,12 @@ def to_uppercase(url):
 
 
 redirectpatterns = (
+    # bug 845988 - remove double slashes in URLs
+    # have to specifically match a non-slash on either side of the slashes
+    # to force it to match all repeating slashes in one go.
+    redirect(r"^(.*[^/])//+([^/].*)$", "/{}/{}", locale_prefix=False),
+    # Issue 13211
+    redirect(r"^/en/$", "/en-US/", permanent=True),
     # bug 874913, 681572
     redirect(r"^(products/)?download\.html", "firefox.new", query=""),
     # bug 845580
@@ -137,10 +143,6 @@ redirectpatterns = (
     redirect(r"^js/language/js20(/.*)?$", "http://www.ecmascript-lang.org", locale_prefix=False),
     redirect(r"^js/language/es4(/.*)?$", "http://www.ecmascript-lang.org", locale_prefix=False),
     redirect(r"^js/language(?P<path>.*)$", "http://www-archive.mozilla.org/js/language{path}"),
-    # bug 845988 - remove double slashes in URLs
-    # have to specifically match a non-slash on either side of the slashes
-    # to force it to match all repeating slashes in one go.
-    redirect(r"^(.*[^/])//+([^/].*)$", "/{}/{}", locale_prefix=False),
     # bug 1237875
     redirect(r"^community/forums/?$", "mozorg.about.forums.forums"),
     # bug 927442
@@ -529,8 +531,6 @@ redirectpatterns = (
     redirect(r"^/exp/firefox/new/?$", "firefox.new"),
     # Issue 14039
     redirect(r"^/exp/opt-out/?$", "https://www.convert.com/opt-out/"),
-    # Issue 13211
-    redirect(r"^/en/$", "/en-US/", permanent=True),
     # Issue 13554
     redirect(r"^about/leadership/senior-leadership/$", "/about/leadership/#senior"),
     redirect(r"^about/leadership/mozilla-foundation/$", "/about/leadership/#foundation"),

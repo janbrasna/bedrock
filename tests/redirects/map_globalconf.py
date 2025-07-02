@@ -787,7 +787,7 @@ URLS = flatten(
         # probably many links to them from other pages and sites that need to keep
         # working.)
         url_test("/foundation/documents/random-stuff.pdf", "https://static.mozilla.com/foundation/documents/random-stuff.pdf"),
-        url_test("/foundation/donate_form.pdf", "https://static.mozilla.com/foundation/documents/donate_form.pdf"),
+        url_test("/foundation/donate_form.pdf", "LINKROT"),
         # openwebfund/ and openwebfund/index.html redirect to another site.  Careful because
         # there are other pages under openwebfund that still need to be served from Bedrock.
         url_test("/foundation/openwebfund/", "https://foundation.mozilla.org/donate/"),
@@ -829,10 +829,9 @@ URLS = flatten(
         url_test("/firefox/new/", "/en-US/firefox/new/", status_code=requests.codes.found),
         url_test("/mobile/37.0{,beta,a2}/releasenotes", "/firefox/android/37.0{,beta,a2}/releasenotes/"),
         url_test("/projects/firefox/3.6.13/whatsnew/", "/firefox/3.6.13/whatsnew/"),
-        url_test("/apps/", "https://marketplace.firefox.com/"),
-        url_test("/dnt/", "https://support.mozilla.org/kb/how-do-i-turn-do-not-track-feature"),
-        url_test("/metrofirefox/", "/firefox/"),
-        url_test("/firefox/brand/", "https://mozilla.design/firefox/"),
+        url_test("/apps/", "https://marketplace.firefox.com/"), #DUPE?
+        url_test("/dnt/", "https://support.mozilla.org/kb/how-do-i-turn-do-not-track-feature"), #DUPE?
+        url_test("/firefox/brand/", "https://mozilla.design/firefox/"), #DUPE?
         # Bug 804810
         url_test("/foundation/identity-guidelines/{,index.html}", "https://mozilla.design/mozilla/"),
         # Bug 1243060

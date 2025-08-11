@@ -24,7 +24,7 @@ def test_410_url(url, base_url):
 @pytest.mark.django_db
 def test_404_url(base_url):
     assert_valid_url(
-        "/en-US/abck",
+        "/en-US/jozxyqk",
         base_url=base_url,
         final_status_code=requests.codes.not_found,
         follow_redirects=True,
@@ -37,20 +37,26 @@ def test_404_url(base_url):
 @pytest.mark.parametrize(
     "url",
     [
+        "/firefox/",
+        "/firefox/new/",
+        "/firefox/all/",
         "/firefox/android/",
         "/firefox/android/faq/",
-        "/firefox/brand/",
         "/firefox/channel/",
+        "/firefox/developer/",
         "/firefox/desktop/",
-        "/firefox/interest-dashboard/",
         "/firefox/mobile/",
-        "/firefox/nightly/whatsnew/",
-        "/firefox/os/",
-        "/firefox/os/notes/1.1/",
-        "/firefox/partners/",
-        "/firefox/speed/",
-        "/firefox/tiles/",
+        "/firefox/notes/",
+        "/firefox/releasenotes/",
+        "/firefox/latest/releasenotes/",
+        "/firefox/android/releasenotes/",
+        "/firefox/ios/releasenotes/",
+        "/firefox/releases/",
+        "/firefox/system-requirements/",
+        "/firefox/installer-help/",
         "/firefox/unsupported/EOL/",
+        "/firefox/unsupported-systems/",        
+        "/firefox/nightly/whatsnew/",
         # Legacy URLs (Bug 1110927)
         "/firefox/start/central.html",
         "/firefox/sync/firstrun.html",
@@ -60,41 +66,14 @@ def test_301_urls(url, base_url, follow_redirects=False):
     assert_valid_url(url, base_url=base_url, follow_redirects=follow_redirects)
 
 
-@pytest.mark.skip(
-    reason="Redirected offsite now. [TODO] Make a new list of key locale fixups.",
-)
 @pytest.mark.headless
 @pytest.mark.nondestructive
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "url",
     [
-        "/firefox/all/",
-        "/firefox/developer/",
-        "/firefox/installer-help/",
-        "/firefox/new/",
-        "/firefox/unsupported-systems/",
-    ],
-)
-def test_302_fx_urls(url, base_url, follow_redirects=False):
-    assert_valid_url(url, base_url=base_url, follow_redirects=follow_redirects, status_code=requests.codes.found)
-
-
-@pytest.mark.headless
-@pytest.mark.nondestructive
-@pytest.mark.django_db
-@pytest.mark.parametrize(
-    "url",
-    [
-        "/firefox/latest/releasenotes/",
-        "/firefox/releasenotes/",
-        "/firefox/notes/",
-        "/firefox/system-requirements/",
         "/firefox/nightly/firstrun/",
-        "/firefox/releases/",
-        "/firefox/android/releasenotes/",
-        "/firefox/ios/releasenotes/",
     ],
 )
-def test_302_fx_urls_kept(url, base_url, follow_redirects=False):
+def test_302_urls(url, base_url, follow_redirects=False):
     assert_valid_url(url, base_url=base_url, follow_redirects=follow_redirects, status_code=requests.codes.found)

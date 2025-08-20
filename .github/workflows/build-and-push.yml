@@ -19,7 +19,7 @@ on:
         default: refs/heads/main
 env:
   APP: bedrock
-  APPLICATION_REPOSITORY: janbrasna/bedrock
+  DOCKERHUB_REPOSITORY: mozmeao/bedrock
   IMAGE: bedrock
   GAR_LOCATION: us
   GCP_PROJECT_ID: moz-fx-bedrock-prod
@@ -31,7 +31,6 @@ jobs:
   build_and_publish_public_images:
     name: Build public Bedrock images and push to Docker hub
     runs-on: ubuntu-latest
-    if: github.repository == ${{ env.APPLICATION_REPOSITORY }}
     outputs:
       long_sha: ${{ env.LONG_SHA }}
       deployment_env: ${{ env.DEPLOYMENT_ENV }}
@@ -129,7 +128,7 @@ jobs:
       - id: upload-assets
         name: Generate hashes and rsync to gs://
         run: |-
-            ASSETS-TMP=mozmeao/bedrock:${{ needs.build_and_publish_public_images.outputs.long_sha }}
+            ASSETS-TMP=${{ env.DOCKERHUB_REPOSITORY }}:${{ needs.build_and_publish_public_images.outputs.long_sha }}
             GS=$APP-${{ needs.build_and_publish_public_images.outputs.deployment_realm }}-${{ needs.build_and_publish_public_images.outputs.deployment_env }}-media/media/
 
 
@@ -163,6 +162,6 @@ jobs:
       - id: push-existing-image-to-gar
         name: Push existing image to GAR
         run: |-
-             DOCKER_PULL=mozmeao/bedrock:${{ needs.build_and_publish_public_images.outputs.long_sha }}
-             DOCKER_TAG=mozmeao/bedrock:${{ needs.build_and_publish_public_images.outputs.long_sha }}+${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY}}/${{ env.IMAGE }}:${{ needs.build_and_publish_public_images.outputs.image_tag }}
+             DOCKER_PULL=${{ env.DOCKERHUB_REPOSITORY }}:${{ needs.build_and_publish_public_images.outputs.long_sha }}
+             DOCKER_TAG=${{ env.DOCKERHUB_REPOSITORY }}:${{ needs.build_and_publish_public_images.outputs.long_sha }}+${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY}}/${{ env.IMAGE }}:${{ needs.build_and_publish_public_images.outputs.image_tag }}
              DOCKER_PUSH=${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY}}/${{ env.IMAGE }}:${{ needs.build_and_publish_public_images.outputs.image_tag }}

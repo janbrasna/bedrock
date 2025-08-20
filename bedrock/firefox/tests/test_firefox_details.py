@@ -836,7 +836,7 @@ class TestFirefoxAndroid(TestCase):
     def test_get_download_url_nightly(self):
         """
         get_download_url should return the same Google Play link of the
-        'org.mozilla.fennec_aurora' product regardless of the architecture type,
+        'org.mozilla.fenix' product regardless of the architecture type,
         if the force_direct option is unspecified.
         """
         assert self.firefox_android.get_download_url("nightly", "arm").startswith(self.google_play_url_base + "fenix")

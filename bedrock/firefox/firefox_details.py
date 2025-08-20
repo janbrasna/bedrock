@@ -348,7 +348,6 @@ class FirefoxAndroid(_ProductDetails):
 
     store_url = settings.GOOGLE_PLAY_FIREFOX_LINK_UTMS
     # Product IDs defined on Google Play
-    # Nightly reuses the Aurora ID to migrate the user base
     store_product_ids = {
         "nightly": "org.mozilla.fenix",
         "beta": "org.mozilla.firefox_beta",

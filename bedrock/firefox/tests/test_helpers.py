@@ -171,10 +171,7 @@ class TestDownloadButtons(TestCase):
         assert pq(links[9]).attr("data-direct-link") is None
 
     def test_nightly_desktop(self):
-        """
-        The Nightly channel should have the Windows universal stub installer
-        instead of the Windows 64-bit build
-        """
+        """The Nightly channel should have 9 platforms available"""
         rf = RequestFactory()
         get_request = rf.get("/fake")
         get_request.locale = "fr"
@@ -185,21 +182,19 @@ class TestDownloadButtons(TestCase):
         )
 
         list = doc(".download-list li")
-        assert list.length == 8
-        assert pq(list[0]).attr("class") == "os_win"
+        assert list.length == 9
+        assert pq(list[0]).attr("class") == "os_win64"
         assert pq(list[1]).attr("class") == "os_win64-msi"
         assert pq(list[2]).attr("class") == "os_win64-aarch64"
-        assert pq(list[3]).attr("class") == "os_win-msi"
-        assert pq(list[4]).attr("class") == "os_osx"
-        assert pq(list[5]).attr("class") == "os_linux64"
-        assert pq(list[6]).attr("class") == "os_linux64-aarch64"
-        assert pq(list[7]).attr("class") == "os_linux"
-        # stub disabled for now for non-en-US locales
-        # bug 1339870
-        # assert 'stub' in pq(pq(list[1]).find('a')[0]).attr('href')
+        assert pq(list[3]).attr("class") == "os_win"
+        assert pq(list[4]).attr("class") == "os_win-msi"
+        assert pq(list[5]).attr("class") == "os_osx"
+        assert pq(list[6]).attr("class") == "os_linux64"
+        assert pq(list[7]).attr("class") == "os_linux64-aarch64"
+        assert pq(list[8]).attr("class") == "os_linux"
 
     def test_aurora_desktop(self):
-        """The Aurora channel should have Windows 64 build"""
+        """The Aurora channel should have 9 platforms available"""
         rf = RequestFactory()
         get_request = rf.get("/fake")
         get_request.locale = "fr"
@@ -220,7 +215,7 @@ class TestDownloadButtons(TestCase):
         assert pq(list[8]).attr("class") == "os_linux"
 
     def test_beta_desktop(self):
-        """The Beta channel should not have Windows 64 build yet"""
+        """The Beta channel should have 9 platforms available"""
         rf = RequestFactory()
         get_request = rf.get("/fake")
         get_request.locale = "fr"
@@ -241,7 +236,7 @@ class TestDownloadButtons(TestCase):
         assert pq(list[8]).attr("class") == "os_linux"
 
     def test_firefox_desktop(self):
-        """The Release channel should not have Windows 64 build yet"""
+        """The Release channel should have 9 platforms available"""
         rf = RequestFactory()
         get_request = rf.get("/fake")
         get_request.locale = "fr"

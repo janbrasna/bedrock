@@ -17,5 +17,5 @@ redirectpatterns = (
         r"^security/iSECPartners_Phishing\.pdf$", "http://website-archive.mozilla.org/www.mozilla.org/security/security/iSECPartners_Phishing.pdf"
     ),
     # issue 16519
-    gone(r"^security/advisories/cve-feed\.json$"),
+    gone(r"security/advisories/cve-feed\.json$"),
 )

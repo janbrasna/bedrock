@@ -2,38 +2,18 @@
 
 name: Download tests
 run-name: Download tests for ${{ github.sha }}
-env:
-  SLACK_CHANNEL_ID: CBX0KH5GA # #www-notify in MoCo Slack
-  SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN_FOR_MEAO_NOTIFICATIONS_APP}}
 on:
   schedule:
-    - cron: "5 14 * * *" # 2:05 PM UTC daily
+    - cron: "25 */3 * * *" # …mock
   workflow_dispatch:
     inputs:
       mozorg_service_hostname:
         description: The root URL of the Mozorg service to run tests against. eg 'https://www.mozilla.org'
-        required: true
+        required: false
 
 jobs:
-  notify-of-test-run-start:
-    if: github.repository == 'mozilla/bedrock'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Notify via Slack that tests are starting
-        uses: ./.github/actions/slack
-        with:
-          env_name: test
-          label: "Download tests [${{ github.sha }}]"
-          status: info
-          channel_id: ${{ env.SLACK_CHANNEL_ID }}
-          slack_bot_token: ${{ env.SLACK_BOT_TOKEN }}
-          ref: ${{ github.sha }}
-          message: "Download tests started"
-
   download-tests:
     runs-on: ubuntu-latest
-    needs: notify-of-test-run-start
     env:
       BASE_URL: ${{ github.event.inputs.mozorg_service_hostname || 'https://www.mozilla.org' }} # Mozorg base URL
       BROWSER_NAME: ""
@@ -69,20 +49,3 @@ jobs:
           name: test-results
           path: results-${{github.run_id}}
           if-no-files-found: ignore  # this avoids a false "Warning" if there were no issues
-
-  notify-of-test-run-completion:
-    if: github.repository == 'mozilla/bedrock' && always()
-    runs-on: ubuntu-latest
-    needs: [notify-of-test-run-start, download-tests]
-    steps:
-      - uses: actions/checkout@v5
-      - name: Notify via Slack of test-run outcome
-        uses: ./.github/actions/slack
-        with:
-          env_name: test
-          label: "Download tests [${{ github.sha }}]"
-          status: ${{ needs.download-tests.result }}
-          channel_id: ${{ env.SLACK_CHANNEL_ID }}
-          slack_bot_token: ${{ env.SLACK_BOT_TOKEN }}
-          ref: ${{ github.sha }}
-          message: "Download tests completed. Status: ${{ needs.download-tests.result }}"

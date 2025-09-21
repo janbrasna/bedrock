@@ -19,11 +19,11 @@ on:
         default: refs/heads/main
 env:
   APP: bedrock
-  ORG: mozmeao
-  IMAGE: bedrock
   GAR_LOCATION: us
   GCP_PROJECT_ID: moz-fx-bedrock-prod
   GAR_REPOSITORY: bedrock-prod
+  IMAGE: bedrock
+  ORG: mozmeao
   REF_ID: ${{ github.event.inputs.ref || github.ref }}
 
 

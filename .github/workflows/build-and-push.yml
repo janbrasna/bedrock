@@ -29,7 +29,7 @@ env:
 
 jobs:
   build_and_publish_public_images:
-    name: Build images and set environments
+    name: Build and push public ${{env.APP}} images and set environments
     runs-on: ubuntu-latest
     outputs:
       long_sha: ${{ env.LONG_SHA }}
@@ -53,28 +53,28 @@ jobs:
         run: |-
           echo "LONG_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      - name: Set main triggered env to dev-nonprod
+      - name: On main set dev-nonprod
         if: github.ref == 'refs/heads/main'  # Updates to the main branch are deployed to dev.
         run: |
           echo TAG="dev-$LONG_SHA" >> $GITHUB_ENV
           echo DEPLOYMENT_ENV=dev >> $GITHUB_ENV
           echo DEPLOYMENT_REALM=nonprod >> $GITHUB_ENV
 
-      - name: Set run-integration-test triggered env to test-nonprod
+      - name: On run-integration-test set test-nonprod
         if: github.ref == 'refs/heads/run-integration-tests'  # Updates to the run-integration-test branch are deployed to test.
         run: |
           echo TAG="test-$LONG_SHA" >> $GITHUB_ENV
           echo DEPLOYMENT_ENV=test >> $GITHUB_ENV
           echo DEPLOYMENT_REALM=nonprod >> $GITHUB_ENV
 
-      - name: Set mock triggered env to stage-nonprod
+      - name: On mock set stage-nonprod
         if: github.ref == 'refs/heads/mock'  # Updates to the stage branch are deployed to stage.
         run: |
             echo TAG="stage-$LONG_SHA" >> $GITHUB_ENV
             echo DEPLOYMENT_ENV=stage >> $GITHUB_ENV
             echo DEPLOYMENT_REALM=nonprod >> $GITHUB_ENV
 
-      - name: Set tag triggered env to prod-prod
+      - name: On tag set prod-prod
         if: startsWith(github.ref, 'refs/tags/')  # Version tags are deployed to prod.
         run: |
           echo TAG="prod-$LONG_SHA" >> $GITHUB_ENV
@@ -120,7 +120,7 @@ jobs:
 
 
   push_image_to_gar:
-    name: Deploy by publishing to GAR
+    name: Push ${{env.APP}} image to GAR with deployment tag
     needs: [build_and_publish_public_images, upload_static_assets]
     runs-on: ubuntu-latest
     #permissions:

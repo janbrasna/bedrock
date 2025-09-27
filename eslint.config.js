@@ -85,7 +85,6 @@ module.exports = [
     {
         ignores: [
             'contentful_migrations/**/*.cjs',
-            'docs/_build/**/*.js',
             'media/js/ie/libs/**/*.js',
             'media/js/libs/**/*.js',
             'static/**/*.js',

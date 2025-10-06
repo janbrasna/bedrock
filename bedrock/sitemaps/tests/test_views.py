@@ -11,18 +11,12 @@ from bedrock.sitemaps.models import NO_LOCALE, SitemapURL
 class TestSitemapView(TestCase):
     def setUp(self):
         data = [
-            {"path": "/firefox/all/", "locale": "de"},
-            {"path": "/firefox/", "locale": "de"},
-            {
-                "path": "/privacy/",
-                "locale": "fr",
-            },
-            {"path": "/firefox/", "locale": "fr"},
+            {"path": "/about/manifesto/", "locale": "de"},
+            {"path": "/about/", "locale": "de"},
+            {"path": "/about/", "locale": "fr"},
+            {"path": "/privacy/", "locale": "fr"},
             {"path": "/keymaster/gatekeeper/there.is.only.xul", "locale": NO_LOCALE},
-            {
-                "path": "/locales/",
-                "locale": NO_LOCALE,
-            },
+            {"path": "/locales/", "locale": NO_LOCALE},
         ]
         SitemapURL.objects.bulk_create(SitemapURL(**kw) for kw in data)
 
@@ -67,10 +61,10 @@ class TestSitemapView(TestCase):
             <?xml version="1.0" encoding="UTF-8"?>
             <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
               <url>
-                <loc>https://www.mozilla.org/de/firefox/</loc>
+                <loc>https://www.mozilla.org/de/about/</loc>
               </url>
               <url>
-                <loc>https://www.mozilla.org/de/firefox/all/</loc>
+                <loc>https://www.mozilla.org/de/about/manifesto/</loc>
               </url>
             </urlset>"""
         )
@@ -82,7 +76,7 @@ class TestSitemapView(TestCase):
             <?xml version="1.0" encoding="UTF-8"?>
             <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
               <url>
-                <loc>https://www.mozilla.org/fr/firefox/</loc>
+                <loc>https://www.mozilla.org/fr/about/</loc>
               </url>
               <url>
                 <loc>https://www.mozilla.org/fr/privacy/</loc>

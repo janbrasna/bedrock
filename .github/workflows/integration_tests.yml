@@ -106,7 +106,8 @@ jobs:
     - name: Run Playwright tests (docker://mcr)
       uses: docker://mcr.microsoft.com/playwright:v1.50.0-noble
       with:
-        args: cd tests/playwright && npx playwright test --grep-invert @a11y
+        working-directory: tests/playwright
+        args: npx playwright test --grep-invert @a11y
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}

@@ -2,9 +2,6 @@
 
 name: Integration tests
 run-name: Integration tests for ${{ inputs.branch }}
-env:
-  SLACK_CHANNEL_ID: CBX0KH5GA # #www-notify in MoCo Slack
-  SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN_FOR_MEAO_NOTIFICATIONS_APP}}
 on:
   workflow_dispatch:
     inputs:
@@ -29,15 +26,7 @@ jobs:
         with:
           sparse-checkout: .github/actions/slack
       - name: Notify via Slack that tests are starting
-        uses: ./.github/actions/slack
-        with:
-          env_name: test
-          label: "Integration tests [${{ inputs.git_sha }}]"
-          status: info
-          channel_id: ${{ env.SLACK_CHANNEL_ID }}
-          slack_bot_token: ${{ env.SLACK_BOT_TOKEN }}
-          ref: ${{ inputs.branch }}
-          message: "Integration tests started"
+        run: cd .github/actions/slack && ls -a
 
   integration-tests:
     if: always()
@@ -45,27 +34,25 @@ jobs:
     strategy:
       matrix:
         include:
-          - LABEL: test-ie-saucelabs
-            BROWSER_NAME: internet explorer
-            DRIVER: SauceLabs
+          - LABEL: test-chrome
+            BROWSER_NAME: chrome
+            DRIVER: Remote
             MARK_EXPRESSION: smoke
-            PLATFORM: Windows 10
-            PYTEST_PROCESSES: 8
           - LABEL: test-headless
             DRIVER: ""
             MARK_EXPRESSION: headless
 
     env:
+      PYTEST_PROCESSES: auto
       BASE_URL: ${{ github.event.inputs.mozorg_service_hostname }}
       BROWSER_NAME: ${{ matrix.BROWSER_NAME }}
       CI_JOB_ID: ${{ github.run_id }}
       DRIVER: ${{ matrix.DRIVER }}
       LABEL: ${{ matrix.LABEL }}
       MARK_EXPRESSION: ${{ matrix.MARK_EXPRESSION }}
-      PLATFORM: ${{ matrix.PLATFORM }}
-      PYTEST_PROCESSES: ${{ matrix.PYTEST_PROCESSES }}
-      SAUCELABS_API_KEY: ${{ secrets.SAUCELABS_API_KEY }}
-      SAUCELABS_USERNAME: ${{ secrets.SAUCELABS_USERNAME }}
+      PLATFORM: ""
+      SAUCELABS_API_KEY: " "
+      SAUCELABS_USERNAME: " "
 
     # Note we use if: always() below to keep things going, rather than
     # continue-on-error, because that approach falsely marks the overall
@@ -131,35 +118,4 @@ jobs:
         with:
           sparse-checkout: .github/actions/slack
       - name: Notify via Slack of test-run success
-        if: ${{ needs.integration-tests.result == 'success' && needs.playwright-tests.result == 'success' }}
-        uses: ./.github/actions/slack
-        with:
-          env_name: test
-          label: "Integration tests [${{ inputs.git_sha }}]"
-          status: "success"
-          channel_id: ${{ env.SLACK_CHANNEL_ID }}
-          slack_bot_token: ${{ env.SLACK_BOT_TOKEN }}
-          ref: ${{ inputs.branch }}
-          message: "Integration tests completed. Status: success"
-      - name: Notify via Slack of test-run failure
-        if: ${{ needs.integration-tests.result == 'failure' || needs.playwright-tests.result == 'failure' }}
-        uses: ./.github/actions/slack
-        with:
-          env_name: test
-          label: "Integration tests [${{ inputs.git_sha }}]"
-          status: "failure"
-          channel_id: ${{ env.SLACK_CHANNEL_ID }}
-          slack_bot_token: ${{ env.SLACK_BOT_TOKEN }}
-          ref: ${{ inputs.branch }}
-          message: "Integration tests completed. Status: failure"
-      - name: Notify via Slack of test-run cancelled
-        if: ${{ needs.integration-tests.result == 'cancelled' || needs.playwright-tests.result == 'cancelled' }}
-        uses: ./.github/actions/slack
-        with:
-          env_name: test
-          label: "Integration tests [${{ inputs.git_sha }}]"
-          status: "cancelled"
-          channel_id: ${{ env.SLACK_CHANNEL_ID }}
-          slack_bot_token: ${{ env.SLACK_BOT_TOKEN }}
-          ref: ${{ inputs.branch }}
-          message: "Integration tests completed. Status: cancelled"
+        run: cd .github/actions/slack && ls -a

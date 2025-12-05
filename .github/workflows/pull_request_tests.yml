@@ -19,9 +19,7 @@ jobs:
 
       - name: "Run Python tests (on Docker)"
         run: |
-            # FIXME: GitHub provides compose version enabling bake but timing out
-            export COMPOSE_BAKE=false
-            make clean test-image
+          make clean test-image
 
       - name: Disk space after build
         run: |

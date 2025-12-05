@@ -9,35 +9,17 @@ on:
     tags:
       - '*'
 
-  workflow_dispatch:
-    inputs:
-      ref:
-        description: 'ref to be deployed (e.g. "refs/heads/main", "v1.0.0", "2c0472cf")'
-        type: string
-        required: true
-        default: refs/heads/main
-env:
-  APP: bedrock
-  GAR_LOCATION: us
-  GCP_PROJECT_ID: moz-fx-bedrock-prod
-  GAR_REPOSITORY: bedrock-prod
-  IMAGE: bedrock
-  ORG: mozmeao
-  REF_ID: ${{ github.event.inputs.ref || github.ref }}
-
-
 jobs:
   build_and_publish_public_images:
-    name: Build and push public images
+    name: Builder
     runs-on: ubuntu-latest
-    if: github.repository == 'mozilla/bedrock'
-    outputs:
-      long_sha: ${{ env.LONG_SHA }}
-      deployment_env: ${{ env.DEPLOYMENT_ENV }}
-      deployment_realm: ${{ env.DEPLOYMENT_REALM }}
-      image_tag: ${{ env.TAG }}
 
     steps:
+      - name: Free space empty
+        run: |
+          echo "Free space:"
+          df -h
+
       - uses: docker/setup-buildx-action@v3
         with:
           buildkitd-flags: "cache-from: type=gha cache-to: type=gha,mode=max"
@@ -48,128 +30,14 @@ jobs:
             fetch-tags: true
             ref: ${{ env.REF_ID }}
 
-      - id: long-sha
-        name: Use full SHA for tagging images
-        run: |-
-          echo "LONG_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
-
-      - name: On main set dev-nonprod
-        if: github.ref == 'refs/heads/main'  # Updates to the main branch are deployed to dev.
+      - name: Free space before buildx
         run: |
-          echo TAG="dev-$LONG_SHA" >> $GITHUB_ENV
-          echo DEPLOYMENT_ENV=dev >> $GITHUB_ENV
-          echo DEPLOYMENT_REALM=nonprod >> $GITHUB_ENV
+          echo "Free space:"
+          df -h
 
-      - name: On run-integration-tests set test-nonprod
-        if: github.ref == 'refs/heads/run-integration-tests'  # Updates to the run-integration-tests branch are deployed to test.
+      - name: Build and push public images
         run: |
-          echo TAG="test-$LONG_SHA" >> $GITHUB_ENV
-          echo DEPLOYMENT_ENV=test >> $GITHUB_ENV
-          echo DEPLOYMENT_REALM=nonprod >> $GITHUB_ENV
-
-      - name: On stage set stage-nonprod
-        if: github.ref == 'refs/heads/stage'  # Updates to the stage branch are deployed to stage.
-        run: |
-            echo TAG="stage-$LONG_SHA" >> $GITHUB_ENV
-            echo DEPLOYMENT_ENV=stage >> $GITHUB_ENV
-            echo DEPLOYMENT_REALM=nonprod >> $GITHUB_ENV
-
-      - name: On tag set prod-prod
-        if: startsWith(github.ref, 'refs/tags/')  # Version tags are deployed to prod.
-        run: |
-          echo TAG="prod-$LONG_SHA" >> $GITHUB_ENV
-          echo DEPLOYMENT_ENV=prod >> $GITHUB_ENV
-          echo DEPLOYMENT_REALM=prod >> $GITHUB_ENV
-
-      - name: Docker login for public images
-        uses: docker/login-action@v3
-        with:
-           username: ${{ secrets.DOCKERHUB_USERNAME }}
-           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build and push public images to Docker Hub
-        run: |
-            ./bin/build-release-image.sh --push
+            ./bin/build-release-image.sh
         timeout-minutes: 90
         env:
-            GIT_COMMIT: ${{ env.LONG_SHA }}
-
-
-  upload_static_assets:
-    name: Upload static assets to GCS
-    runs-on: ubuntu-latest
-    environment: build
-    needs: build_and_publish_public_images
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - uses: google-github-actions/auth@v2
-        with:
-          token_format: access_token
-          service_account: artifact-writer@${{ env.GCP_PROJECT_ID }}.iam.gserviceaccount.com
-          workload_identity_provider: ${{ vars.GCPV2_GITHUB_WORKLOAD_IDENTITY_PROVIDER }}
-
-      - uses: google-github-actions/setup-gcloud@v2
-        with:
-          version: 413.0.0
-
-      - name: Generate hashes and rsync to gs://
-        env:
-          LONG_SHA: ${{ needs.build_and_publish_public_images.outputs.long_sha }}
-          DEPLOYMENT_REALM: ${{ needs.build_and_publish_public_images.outputs.deployment_realm }}
-          DEPLOYMENT_ENV: ${{ needs.build_and_publish_public_images.outputs.deployment_env }}
-        run: |-
-            TMP_DIR=static-upload
-            TMP_DIR_HASHED=static-upload-hashed
-
-            docker run -d --name assets-tmp $ORG/$IMAGE:$LONG_SHA
-
-            mkdir -p ./$TMP_DIR ./$TMP_DIR_HASHED
-
-            docker exec assets-tmp docker/bin/build_staticfiles.sh --nolink
-            docker exec assets-tmp mkdir -p /app/static-upload-hashed
-            docker exec assets-tmp bin/move_hashed_staticfiles.py /app/static /app/static-upload-hashed
-
-            docker cp assets-tmp:app/static/ ./$TMP_DIR/
-            docker cp assets-tmp:app/static-upload-hashed ./$TMP_DIR_HASHED/
-
-            gsutil -m rsync -r ./$TMP_DIR_HASHED/* gs://$APP-$DEPLOYMENT_REALM-$DEPLOYMENT_ENV-media/media/
-            gsutil -m rsync -r ./$TMP_DIR/* gs://$APP-$DEPLOYMENT_REALM-$DEPLOYMENT_ENV-media/media/
-            rm -rf ./$TMP_DIR/ ./$TMP_DIR_HASHED/
-            docker kill assets-tmp
-            docker rm assets-tmp
-
-
-  push_image_to_gar:
-    name: Push bedrock image to GAR
-    needs: [build_and_publish_public_images, upload_static_assets]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - id: gcp_auth
-        uses: google-github-actions/auth@v2
-        with:
-            token_format: access_token
-            service_account: artifact-writer@${{ env.GCP_PROJECT_ID }}.iam.gserviceaccount.com
-            workload_identity_provider: ${{ vars.GCPV2_GITHUB_WORKLOAD_IDENTITY_PROVIDER }}
-
-      - uses: docker/login-action@v3
-        name: Docker login to GAR
-        with:
-           registry: ${{ env.GAR_LOCATION }}-docker.pkg.dev
-           username: oauth2accesstoken
-           password: ${{ steps.gcp_auth.outputs.access_token }}
-
-      - name: Add deployment tag to existing image and push to GAR
-        env:
-          LONG_SHA: ${{ needs.build_and_publish_public_images.outputs.long_sha }}
-          IMAGE_TAG: ${{ needs.build_and_publish_public_images.outputs.image_tag }}
-        run: |-
-             docker pull $ORG/$IMAGE:$LONG_SHA
-             docker tag $ORG/$IMAGE:$LONG_SHA ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY}}/${{ env.IMAGE }}:$IMAGE_TAG
-             docker push ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY}}/${{ env.IMAGE }}:$IMAGE_TAG
+            GIT_COMMIT: ${{ github.sha }}

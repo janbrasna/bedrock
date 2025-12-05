@@ -23,10 +23,10 @@ jobs:
 
       - name: Remove unused tools
         run: |
+          sudo rm -rf /home/runner/.rustup
           #sudo rm -rf /usr/lib/jvm
           #sudo rm -rf /usr/share/dotnet
-          #sudo rm -rf /usr/share/swift
-          sudo rm -rf /usr/local/lib/android/sdk
+          sudo rm -rf /usr/share/swift
           #sudo rm -rf /usr/local/lib/android
           #sudo rm -rf /usr/local/share/chromium
           #sudo rm -rf /opt/microsoft /opt/google

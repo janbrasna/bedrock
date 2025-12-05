@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: Free space empty
         run: |
+          docker system df
           echo "Free space:"
           df -h
 
@@ -32,6 +33,7 @@ jobs:
 
       - name: Free space before buildx
         run: |
+          docker system df
           echo "Free space:"
           df -h
 
@@ -41,3 +43,10 @@ jobs:
         timeout-minutes: 90
         env:
             GIT_COMMIT: ${{ github.sha }}
+
+      - name: Free space final
+        if: always()
+        run: |
+          docker system df
+          echo "Free space:"
+          df -h

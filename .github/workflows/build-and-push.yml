@@ -21,15 +21,6 @@ jobs:
           echo "Free space:"
           df -h
 
-      - name: Configure Docker to use /mnt
-        run: |
-          DOCKER_DATA_ROOT='/mnt/var/lib/docker'
-          DOCKER_DAEMON_JSON='/etc/docker/daemon.json'
-          sudo mkdir -p "${DOCKER_DATA_ROOT}"
-          jq --arg dataroot "${DOCKER_DATA_ROOT}" '. + {"data-root": $dataroot}' "${DOCKER_DAEMON_JSON}" > "/tmp/docker.json.tmp"
-          sudo mv "/tmp/docker.json.tmp" "${DOCKER_DAEMON_JSON}"
-          sudo systemctl restart docker
-
       - name: Remove unused tools
         run: |
           #sudo rm -rf /usr/lib/jvm
@@ -47,7 +38,7 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
         with:
-          buildkitd-flags: "cache-from: type=gha cache-to: type=gha,mode=max"
+          buildkitd-flags: "cache-from: type=gha,dest=/mnt cache-to: type=gha,src=/mnt,mode=max"
 
       - uses: actions/checkout@v5
         with:

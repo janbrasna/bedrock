@@ -26,19 +26,19 @@ jobs:
           #sudo rm -rf /usr/lib/jvm
           #sudo rm -rf /usr/share/dotnet
           #sudo rm -rf /usr/share/swift
-          #sudo rm -rf /usr/local/lib/android
-          #sudo rm -rf /usr/local/share/chromium
-          #sudo rm -rf /opt/microsoft /opt/google
-          #sudo rm -rf /opt/az
-          #sudo rm -rf /opt/ghc
-          #sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/local/share/chromium
+          sudo rm -rf /opt/microsoft /opt/google
+          sudo rm -rf /opt/az
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/.ghcup
           #sudo rm -rf /usr/local/julia*
           #sudo rm -rf /usr/local/share/powershell
-          #sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
 
       - uses: docker/setup-buildx-action@v3
         with:
-          buildkitd-flags: "cache-from: type=gha,dest=/mnt cache-to: type=gha,src=/mnt,mode=max"
+          buildkitd-flags: "cache-from: type=gha cache-to: type=gha,mode=max"
 
       - uses: actions/checkout@v5
         with:

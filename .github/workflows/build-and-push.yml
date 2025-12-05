@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - stage
-      - run-integration-tests
+      - test-cd
     tags:
       - '*'
 

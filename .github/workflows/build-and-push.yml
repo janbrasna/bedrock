@@ -12,7 +12,7 @@ on:
 jobs:
   build_and_publish_public_images:
     name: Builder
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
 
     steps:
       - name: Free space on the runner
@@ -79,6 +79,7 @@ jobs:
 
       - name: Build and push public images
         run: |
+            export BUILDKITD_FLAGS='--cache-from type=gha --cache-to type=gha,mode=max'
             ./bin/build-release-image.sh
         timeout-minutes: 90
         env:

@@ -62,6 +62,8 @@ jobs:
           #sudo rm -rf /opt/hostedtoolcache/CodeQL
 
       - uses: docker/setup-buildx-action@v3
+        with:
+          buildkitd-flags: "cache-from: type=gha cache-to: type=gha,mode=max"
 
       - uses: actions/checkout@v5
         with:

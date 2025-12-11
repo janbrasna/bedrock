@@ -150,9 +150,9 @@ test_infra/fixtures/tls.json:
 	${MAKE} build-ci
 
 build-ci: .docker-build-pull
-	${DC_CI} build --pull release --cache-from=type=gha --cache-to=type=gha,mode=max
+	${DC_CI} build --pull release
 #	tag intermediate images using cache
-	${DC_CI} build app builder assets app-base --cache-from=type=gha --cache-to=type=gha,mode=max
+	${DC_CI} build app builder assets app-base
 	touch .docker-build-ci
 
 test-ci: .docker-build-ci

@@ -79,8 +79,7 @@ jobs:
 
       - name: Build and push public images
         run: |
-            export DOCKER_BUILDKIT=1
-            export BUILDKITD_FLAGS='--cache-from type=gha --cache-to type=gha,mode=max'
+            export BUILDX_BUILDKIT_DRIVER_OPTS="--cache-from=type=gha --cache-to=type=gha,mode=max"
             ./bin/build-release-image.sh
         timeout-minutes: 90
         env:

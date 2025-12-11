@@ -12,7 +12,7 @@ on:
 jobs:
   build_and_publish_public_images:
     name: Builder
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Free space on the runner

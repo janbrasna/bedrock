@@ -62,8 +62,6 @@ jobs:
           #sudo rm -rf /opt/hostedtoolcache/CodeQL
 
       - uses: docker/setup-buildx-action@v3
-        with:
-          buildkitd-flags: "cache-from: type=gha cache-to: type=gha,mode=max"
 
       - uses: actions/checkout@v5
         with:
@@ -79,7 +77,6 @@ jobs:
 
       - name: Build and push public images
         run: |
-            export BUILDX_BUILDKIT_DRIVER_OPTS="--cache-from=type=gha --cache-to=type=gha,mode=max"
             ./bin/build-release-image.sh
         timeout-minutes: 90
         env:

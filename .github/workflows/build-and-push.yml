@@ -77,12 +77,19 @@ jobs:
           echo "Free space:"
           df -h
 
-      - name: Build and push public images
-        run: |
-            ./bin/build-release-image.sh
-        timeout-minutes: 90
-        env:
-            GIT_COMMIT: ${{ github.sha }}
+      - uses: docker/bake-action@v6
+        with:
+          set: |
+            *.cache-from=type=gha
+            *.cache-to=type=gha,mode=max
+          push: false
+
+      #- name: Build and push public images
+      #  run: |
+      #      ./bin/build-release-image.sh
+      #  timeout-minutes: 90
+      #  env:
+      #      GIT_COMMIT: ${{ github.sha }}
 
       - name: Free space final
         if: always()

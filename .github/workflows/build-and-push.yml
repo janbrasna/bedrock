@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - stage
-      - test-cd
+      - test-cache
     tags:
       - '*'
 
@@ -76,6 +76,9 @@ jobs:
           docker system df
           echo "Free space:"
           df -h
+
+      - run: |
+          cp .env-dist .env
 
       - uses: docker/bake-action@v6
         with:

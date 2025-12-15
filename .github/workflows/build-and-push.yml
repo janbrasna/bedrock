@@ -21,45 +21,14 @@ jobs:
           echo "Free space:"
           df -h
 
-      - name: Measure jvm
+      - name: Try /mnt
         run: |
-          sudo rm -rf /usr/lib/jvm
-          echo "Free space:"
-          df -h
+          sudo mkdir -p /mnt/docker
+          sudo systemctl stop docker
+          sudo rsync -aP /var/lib/docker/ /mnt/docker/
+          sudo systemctl daemon-reload
+          sudo systemctl start docker --data-root /mnt/docker
 
-      - name: Measure rustup
-        run: |
-          sudo rm -rf /home/runner/.rustup
-          echo "Free space:"
-          df -h
-
-      - name: Measure ghcup
-        run: |
-          sudo rm -rf /usr/local/.ghcup
-          echo "Free space:"
-          df -h
-
-      - name: Measure swift
-        run: |
-          sudo rm -rf /usr/share/swift
-          echo "Free space:"
-          df -h
-
-      - name: Remove unused tools
-        run: |
-          #sudo rm -rf /home/runner/.rustup
-          #sudo rm -rf /usr/lib/jvm
-          #sudo rm -rf /usr/share/dotnet
-          #sudo rm -rf /usr/share/swift
-          #sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /opt/microsoft /opt/google
-          #sudo rm -rf /opt/az
-          sudo rm -rf /opt/ghc
-          #sudo rm -rf /usr/local/.ghcup
-          #sudo rm -rf /usr/local/julia*
-          #sudo rm -rf /usr/local/share/powershell
-          #sudo rm -rf /opt/hostedtoolcache/CodeQL
 
       - uses: docker/setup-buildx-action@v3
         with:

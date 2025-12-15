@@ -7,10 +7,6 @@ services:
     build:
       context: .
       target: assets
-      cache_from:
-        - type=gha
-      cache_to:
-        - type=gha,mode=max
     image: mozmeao/bedrock_assets:${GIT_COMMIT:-latest}
     platform: linux/amd64
     command: npm run watch
@@ -28,10 +24,6 @@ services:
     build:
       context: .
       target: devapp
-      cache_from:
-        - type=gha
-      cache_to:
-        - type=gha,mode=max
     image: mozmeao/bedrock_test:${GIT_COMMIT:-latest}
     platform: linux/amd64
     command: python manage.py runserver 0.0.0.0:8080
@@ -114,10 +106,6 @@ services:
       target: release
       args:
         GIT_SHA: ${GIT_COMMIT:-latest}
-      cache_from:
-        - type=gha
-      cache_to:
-        - type=gha,mode=max
     image: mozmeao/bedrock:${GIT_COMMIT:-latest}
     platform: linux/amd64
 
@@ -155,10 +143,6 @@ services:
     build:
       context: .
       target: python-builder
-      cache_from:
-        - type=gha
-      cache_to:
-        - type=gha,mode=max
     image: mozmeao/bedrock_build:${GIT_COMMIT:-latest}
     platform: linux/amd64
 
@@ -166,10 +150,6 @@ services:
     build:
       context: .
       target: app-base
-      cache_from:
-        - type=gha
-      cache_to:
-        - type=gha,mode=max
     image: mozmeao/bedrock_code:${GIT_COMMIT:-latest}
     platform: linux/amd64
 

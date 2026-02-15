@@ -1,4 +1,4 @@
-# Workflow that runs CDN and SSL tests on live infra
+# Workflow that runs CDN and SSL tests on live infra…
 
 name: CDN tests
 on:

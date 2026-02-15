@@ -55,8 +55,8 @@ jobs:
 
       - name: Run CDN tests (mock/local container)
         run: |
-          docker compose build test
-          docker compose run test pytest --base-url $BASE_URL -m $MARK_EXPRESSION
+          make build-ci
+          docker compose run test pytest --base-url $BASE_URL -m "$MARK_EXPRESSION"
 
       - name: Store artifacts
         if: always()

@@ -53,13 +53,10 @@ jobs:
       - name: Fetch codebase
         uses: actions/checkout@v6
 
-      - name: (Mock image)
-        run: ./bin/build-release-image.sh
-
-      - name: Run CDN tests
-        run: ./bin/integration_tests/functional_tests.sh
-        env:
-          TEST_IMAGE: mozmeao/bedrock_test:${{ github.sha }}
+      - name: Run CDN tests (mock/local container)
+        run: |
+          docker compose build test
+          docker compose run test pytest --base-url $BASE_URL -m $MARK_EXPRESSION
 
       - name: Store artifacts
         if: always()

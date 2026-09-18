@@ -3,7 +3,7 @@ run-name: Accessibility Tests for ${{ github.sha }}
 on:
   push:
     branches:
-    - test
+    - test26
 
 jobs:
   accessibility-tests:

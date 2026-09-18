@@ -23,7 +23,7 @@ env:
   GAR_REPOSITORY: bedrock-prod
   IMAGE: bedrock
   ORG: mozmeao
-  REF_ID: a5c3ca09d9649d57bef5bdd211d2cbde336d9a78
+  REF_ID: ${{ github.event.inputs.ref || github.ref }}
 
 permissions:
   contents: read
